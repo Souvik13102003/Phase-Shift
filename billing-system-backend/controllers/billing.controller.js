@@ -76,61 +76,61 @@ See you at the fest! 🚀`,
 
 // Billing Controller
 exports.billStudent = async (req, res) => {
-    try {
-      const {
-        studentId,
-        paymentMode,
-        transactionId,
-        foodCoupon,
-        phone,
-        email
-      } = req.body;
-  
-      // 🔍 Log studentId received from request
-      console.log("Received studentId:", studentId);
-  
-      const screenshot = req.file ? req.file.path : '';
-  
-      const student = await Student.findById(studentId);
-  
-      if (!student) {
-        console.log("Student not found in DB for ID:", studentId); // Additional debug log
-        return res.status(404).json({ message: 'Student not found' });
-      }
-  
-      const amount = foodCoupon === 'true' ? 300 : 150;
-  
-      const billing = new Billing({
-        student: student._id,
-        paymentMode,
-        transactionId,
-        screenshot,
-        foodCoupon: foodCoupon === 'true',
-        amount,
-        phone,
-        email,
-      });
-  
-      await billing.save();
-  
-      // Update fund
-      let fund = await Fund.findOne();
-      if (!fund) {
-        fund = new Fund({ totalFund: amount });
-      } else {
-        fund.totalFund += amount;
-      }
-      await fund.save();
-  
-      // Generate and send PDF
-      const pdfPath = await generateBillPDF(billing, student);
-      await sendBillEmail(email, pdfPath);
-  
-      res.status(201).json({ message: 'Billing successful, email sent 🎉' });
-  
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Billing failed' });
+  try {
+    const {
+
+      studentRollNo,  // Fix: Get roll number instead of studentId
+      paymentMode,
+      transactionId,
+      foodCoupon,
+      phone,
+      email
+    } = req.body;
+
+    console.log("Received studentRollNo:", studentRollNo);
+
+    const screenshot = req.file ? req.file.path : '';
+
+
+const student = await Student.findOne({ universityRollNo: studentRollNo.trim() });
+
+    if (!student) {
+      console.log("Student not found in DB for Roll No:", studentRollNo);
+      return res.status(404).json({ message: 'Student not found' });
     }
-  };
-  
+
+    const amount = foodCoupon === 'true' ? 300 : 150;
+
+    const billing = new Billing({
+      student: student._id,
+      paymentMode,
+      transactionId,
+      screenshot,
+      foodCoupon: foodCoupon === 'true',
+      amount,
+      phone,
+      email,
+    });
+
+    await billing.save();
+
+    // Update fund
+    let fund = await Fund.findOne();
+    if (!fund) {
+      fund = new Fund({ totalFund: amount });
+    } else {
+      fund.totalFund += amount;
+    }
+    await fund.save();
+
+    // Generate and send PDF
+    const pdfPath = await generateBillPDF(billing, student);
+    await sendBillEmail(email, pdfPath);
+
+    res.status(201).json({ message: 'Billing successful, email sent 🎉' });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Billing failed' });
+  }
+};

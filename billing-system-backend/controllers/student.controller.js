@@ -23,7 +23,13 @@ exports.uploadStudentsFromExcel = async (req, res) => {
       const existing = await Student.findOne({ universityRollNo: roll });
       if (existing) continue;
 
-      await Student.create({ universityRollNo: roll, name, year, section });
+      await Student.create({
+        universityRollNo: roll,
+        name,
+        year,
+        section,
+        hasPaid: false, // explicitly setting default
+      });
       inserted++;
     }
 
@@ -35,6 +41,7 @@ exports.uploadStudentsFromExcel = async (req, res) => {
     return res.status(500).json({ message: "Error uploading Excel file" });
   }
 };
+
 
 exports.getAllStudents = async (req, res) => {
   try {
@@ -102,3 +109,39 @@ exports.deleteStudent = async (req, res) => {
     return res.status(500).json({ message: "Failed to delete student" });
   }
 };
+
+// Mark student as Paid
+exports.markStudentAsPaid = async (req, res) => {
+  try {
+    const student = await Student.findOneAndUpdate(
+      { universityRollNo: req.params.rollNo },
+      { hasPaid: true },
+      { new: true }
+    );
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Payment status updated to Paid", student });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to update payment status" });
+  }
+};
+
+// Get student by roll number
+exports.getStudentByRollNo = async (req, res) => {
+  try {
+    const student = await Student.findOne({ universityRollNo: req.params.rollNo });
+    if (!student) return res.status(404).json({ message: "Student not found" });
+    res.json(student);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+

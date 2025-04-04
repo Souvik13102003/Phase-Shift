@@ -21,6 +21,11 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    enum: ["A", "B", "C"],
+  },
+  hasPaid: {
+    type: Boolean,
+    default: false, // ✅ default: not paid
   },
 });
 

@@ -10,6 +10,8 @@ const {
   addStudentManually,
   updateStudent,
   deleteStudent,
+  markStudentAsPaid,
+  getStudentByRollNo
 } = require("../controllers/student.controller");
 
 // @route   POST /api/students/upload-excel
@@ -36,5 +38,12 @@ router.put("/:id", protect, updateStudent);
 // @route   DELETE /api/students/:id
 // @desc    Delete a student
 router.delete("/:id", protect, deleteStudent);
+
+// @route   PUT /api/students/mark-paid/:rollNo
+// @desc    Mark a student as Paid by roll number
+router.put("/mark-paid/:rollNo", protect, markStudentAsPaid);
+
+// @route GET /api/students/roll/:rollNo
+router.get('/roll/:rollNo', protect, getStudentByRollNo);
 
 module.exports = router;
