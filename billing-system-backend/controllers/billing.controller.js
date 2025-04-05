@@ -134,3 +134,21 @@ const student = await Student.findOne({ universityRollNo: studentRollNo.trim() }
     res.status(500).json({ message: 'Billing failed' });
   }
 };
+
+exports.getPaymentStats = async (req, res) => {
+  try {
+    const totalOnline = await Billing.countDocuments({ paymentMode: 'Online' });
+    const totalCash = await Billing.countDocuments({ paymentMode: 'Cash' });
+    const totalFoodCoupons = await Billing.countDocuments({ foodCoupon: true });
+
+    res.json({
+      totalOnline,
+      totalCash,
+      totalFoodCoupons,
+    });
+  } catch (error) {
+    console.error("Error fetching payment stats:", error);
+    res.status(500).json({ message: "Failed to fetch payment stats" });
+  }
+};
+

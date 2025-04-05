@@ -1,4 +1,6 @@
+// frontend/src/App.js
 import React from 'react';
+import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -9,8 +11,15 @@ import ViewAllStudents from './pages/ViewAllStudents';
 import Sidebar from './components/Sidebar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
+import { Box, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+
+const drawerWidth = 240;
 
 const App = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const drawerVariant = isMobile ? 'temporary' : 'permanent';
+
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -20,9 +29,20 @@ const App = () => {
             path="/*"
             element={
               <ProtectedRoute>
-                <div style={{ display: 'flex' }}>
-                  <Sidebar />
-                  <div style={{ marginLeft: 240, padding: 20, width: '100%' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <Sidebar variant={drawerVariant} />
+                  <Box
+                    component="main"
+                    sx={{
+                      flexGrow: 1,
+                      padding: 3,
+                      ...(drawerVariant === 'permanent' && {
+                        marginLeft: `${drawerWidth}px`,
+                      }),
+                    }}
+                  >
+                    {/* Toolbar spacing only for mobile AppBar */}
+                    {drawerVariant === 'temporary' && <Toolbar />}
                     <Routes>
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/upload" element={<UploadExcel />} />
@@ -30,8 +50,8 @@ const App = () => {
                       <Route path="/view-all-students" element={<ViewAllStudents />} />
                       <Route path="/billing/:rollNo" element={<Billing />} />
                     </Routes>
-                  </div>
-                </div>
+                  </Box>
+                </Box>
               </ProtectedRoute>
             }
           />

@@ -3,6 +3,8 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../middlewares/MulterExcel");
 const { protect } = require("../middlewares/auth.middleware");
+const { getStudentStats } = require("../controllers/student.controller");
+
 
 const {
   uploadStudentsFromExcel,
@@ -45,5 +47,9 @@ router.put("/mark-paid/:rollNo", protect, markStudentAsPaid);
 
 // @route GET /api/students/roll/:rollNo
 router.get('/roll/:rollNo', protect, getStudentByRollNo);
+
+// @route GET /api/students/stats
+router.get("/stats", protect, getStudentStats);
+
 
 module.exports = router;

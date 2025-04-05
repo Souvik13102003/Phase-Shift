@@ -144,4 +144,17 @@ exports.getStudentByRollNo = async (req, res) => {
   }
 };
 
+// Count stats: total, paid, unpaid
+exports.getStudentStats = async (req, res) => {
+  try {
+    const total = await Student.countDocuments();
+    const paid = await Student.countDocuments({ hasPaid: true });
+    const notPaid = total - paid;
+
+    return res.status(200).json({ total, paid, notPaid });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to fetch student stats" });
+  }
+};
 

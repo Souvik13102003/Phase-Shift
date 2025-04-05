@@ -1,0 +1,40 @@
+/* frontend/src/styles/Sidebar.css */
+
+/* Official MUI theme-inspired look */
+.drawer-expanded {
+    width: 240px;
+    background-color: #1976d2; /* Primary main */
+    color: white;
+    transition: width 0.3s;
+  }
+  
+  .drawer-collapsed {
+    width: 60px;
+    background-color: #1976d2;
+    color: white;
+    transition: width 0.3s;
+    overflow-x: hidden;
+  }
+  
+  .sidebar-icon {
+    color: white;
+  }
+  
+  .sidebar-item {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .sidebar-toggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1300;
+  }
+  
+  .hamburger {
+    background-color: #1976d2;
+    color: white;
+    border-radius: 50%;
+  }
+  

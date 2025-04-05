@@ -1,0 +1,41 @@
+/* frontend/src/styles/Dashboard.css */
+
+.dashboard-container {
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .dashboard-paper {
+    width: 100%;
+    max-width: 800px;
+    padding: 32px;
+    background-color: #ffffff;
+    border-radius: 12px;
+  }
+  
+  .dashboard-title {
+    font-weight: 600;
+    color: #1976d2;
+    margin-bottom: 8px;
+  }
+  
+  .dashboard-subtext {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .fund-box {
+    margin-top: 16px;
+    padding: 20px;
+    background-color: #f0f2f5;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .fund-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
