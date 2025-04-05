@@ -1,17 +1,20 @@
+// frontend/src/pages/UploadExcel.js
 import React, { useState } from "react";
+import '../styles/UploadExcel.css';
 import axios from "axios";
 import {
   Paper,
   Typography,
   Button,
   Box,
-  Input,
   Snackbar,
   Alert,
 } from "@mui/material";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const UploadExcel = () => {
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState("");
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -20,11 +23,12 @@ const UploadExcel = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+    setFileName(e.target.files[0]?.name || "");
   };
 
   const handleUpload = async () => {
     if (!file) {
-      return alert("Please select a file");
+      return setSnackbar({ open: true, message: "Please select a file", severity: "warning" });
     }
 
     const formData = new FormData();
@@ -32,8 +36,6 @@ const UploadExcel = () => {
 
     try {
       const token = localStorage.getItem("token");
-      console.log("Token sent:", token); // Add this for debugging
-
       const response = await axios.post(
         "http://localhost:5000/api/students/upload-excel",
         formData,
@@ -60,21 +62,35 @@ const UploadExcel = () => {
   };
 
   return (
-    <Paper elevation={3} style={{ padding: "2rem" }}>
-      <Typography variant="h5" gutterBottom>
-        Upload Student Excel
-      </Typography>
-      <Box mt={2}>
-        <Input type="file" onChange={handleFileChange} />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleUpload}
-          style={{ marginLeft: "1rem" }}
-        >
-          Upload
-        </Button>
-      </Box>
+    <div className="upload-container">
+      <Paper elevation={1} className="upload-paper">
+        <Typography variant="h5" className="upload-title">
+          Upload Student Excel
+        </Typography>
+
+        <Box className="upload-box">
+          <label htmlFor="excel-upload" className="file-input-label">
+            <CloudUploadIcon className="upload-icon" />
+            {fileName || "Choose Excel file"}
+          </label>
+
+          <input
+            id="excel-upload"
+            type="file"
+            accept=".xlsx, .xls"
+            onChange={handleFileChange}
+            hidden
+          />
+
+          <Button
+            variant="contained"
+            className="upload-btn"
+            onClick={handleUpload}
+          >
+            Upload
+          </Button>
+        </Box>
+      </Paper>
 
       <Snackbar
         open={snackbar.open}
@@ -83,7 +99,7 @@ const UploadExcel = () => {
       >
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
-    </Paper>
+    </div>
   );
 };
 

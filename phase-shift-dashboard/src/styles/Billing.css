@@ -1,0 +1,72 @@
+/* frontend/src/styles/Billing.css */
+
+.billing-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+    background-color: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  
+  .billing-title {
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .student-details {
+    margin-bottom: 20px;
+    background-color: #f3f4f6;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  input[type="file"] {
+    margin-top: 10px;
+  }
+  
+  .submit-button {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  @media (max-width: 768px) {
+    .billing-container {
+      padding: 15px;
+    }
+  
+    .billing-title {
+      font-size: 1.2rem;
+    }
+  
+    .student-details {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  
+    .submit-button {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .billing-container {
+      padding: 10px;
+    }
+  
+    .billing-title {
+      font-size: 1rem;
+    }
+  
+    .student-details {
+      font-size: 0.8rem;
+    }
+  
+    .submit-button {
+      width: 100%;
+    }
+  
+    .submit-button button {
+      width: 100%;
+    }
+  }
+  

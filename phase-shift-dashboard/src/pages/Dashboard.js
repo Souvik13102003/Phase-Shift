@@ -1,14 +1,16 @@
 // frontend/src/pages/Dashboard.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../styles/Dashboard.css';
-import {
-  Paper,
-  Typography,
-  CircularProgress,
-  Box,
-  Grid,
-} from '@mui/material';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../styles/Dashboard.css";
+import { Paper, Typography, CircularProgress, Box, Grid } from "@mui/material";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import GroupIcon from "@mui/icons-material/Group";
+import SchoolIcon from "@mui/icons-material/School";
+import PaidIcon from "@mui/icons-material/Paid";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import FastfoodIcon from "@mui/icons-material/Fastfood";
 
 const Dashboard = () => {
   const [fund, setFund] = useState(0);
@@ -18,217 +20,110 @@ const Dashboard = () => {
     paid: 0,
     notPaid: 0,
   });
-
   const [paymentStats, setPaymentStats] = useState({
     totalOnline: 0,
     totalCash: 0,
     totalFoodCoupons: 0,
   });
 
-  const [loadingFund, setLoadingFund] = useState(true);
-  const [loadingUsers, setLoadingUsers] = useState(true);
-  const [loadingStudentStats, setLoadingStudentStats] = useState(true);
-  const [loadingPaymentStats, setLoadingPaymentStats] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    const fetchFund = async () => {
+    const token = localStorage.getItem("token");
+    const fetchAll = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fund', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setFund(response.data.totalFund);
-      } catch (error) {
-        console.error('Error fetching fund:', error);
+        const [fundRes, userRes, studentRes, paymentRes] = await Promise.all([
+          axios.get("http://localhost:5000/api/fund", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("http://localhost:5000/api/users/count", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("http://localhost:5000/api/students/stats", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("http://localhost:5000/api/billings/stats", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        setFund(fundRes.data.totalFund);
+        setUserCount(userRes.data.totalUsers);
+        setStudentStats(studentRes.data);
+        setPaymentStats(paymentRes.data);
+      } catch (err) {
+        console.error("Dashboard loading error:", err);
       } finally {
-        setLoadingFund(false);
+        setLoading(false);
       }
     };
 
-    const fetchUserCount = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/users/count', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUserCount(response.data.totalUsers);
-      } catch (error) {
-        console.error('Error fetching user count:', error);
-      } finally {
-        setLoadingUsers(false);
-      }
-    };
-
-    const fetchStudentStats = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/students/stats', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setStudentStats(response.data);
-      } catch (error) {
-        console.error('Error fetching student stats:', error);
-      } finally {
-        setLoadingStudentStats(false);
-      }
-    };
-
-    const fetchPaymentStats = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/billings/stats', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setPaymentStats(response.data);
-      } catch (error) {
-        console.error('Error fetching payment stats:', error);
-      } finally {
-        setLoadingPaymentStats(false);
-      }
-    };
-
-    fetchFund();
-    fetchUserCount();
-    fetchStudentStats();
-    fetchPaymentStats();
+    fetchAll();
   }, []);
+
+  const metrics = [
+    { label: "Total Fund", value: `₹${fund}`, icon: <MonetizationOnIcon /> },
+    { label: "Users", value: userCount, icon: <GroupIcon /> },
+    {
+      label: "Total Students",
+      value: studentStats.total,
+      icon: <SchoolIcon />,
+    },
+    { label: "Students Paid", value: studentStats.paid, icon: <PaidIcon /> },
+    {
+      label: "Students Not Paid",
+      value: studentStats.notPaid,
+      icon: <CancelIcon />,
+    },
+    {
+      label: "Online Payments",
+      value: paymentStats.totalOnline,
+      icon: <CreditCardIcon />,
+    },
+    {
+      label: "Cash Payments",
+      value: paymentStats.totalCash,
+      icon: <AttachMoneyIcon />,
+    },
+    {
+      label: "Food Coupons",
+      value: paymentStats.totalFoodCoupons,
+      icon: <FastfoodIcon />,
+    },
+  ];
 
   return (
     <div className="dashboard-container">
-      <Paper elevation={1} className="dashboard-paper">
-        <Typography variant="h4" className="dashboard-title">
-          Management Dashboard
+      <Box className="dashboard-wrapper">
+        <Typography variant="h5" className="dashboard-heading">
+          Dashboard Overview
         </Typography>
-        <Typography variant="body1" className="dashboard-subtext">
-          Welcome to the Phase Shift Billing System.
+        <Typography variant="body2" className="dashboard-subtext">
+          Phase Shift Billing System
         </Typography>
 
-        <Box mt={4}>
-          <Grid container spacing={3}>
-            {/* Total Fund */}
-            <Grid item xs={12} md={6}>
-              {loadingFund ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    💰 Total Fund Collected:
+        {loading ? (
+          <Box className="dashboard-loader">
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Grid container spacing={2} justifyContent="center">
+            {metrics.map((item, index) => (
+              <Grid item key={index}>
+                <Paper className="dashboard-card">
+                  <Box className="dashboard-icon">{item.icon}</Box>
+                  <Typography className="dashboard-label">
+                    {item.label}
                   </Typography>
-                  <Typography variant="h4" color="primary">
-                    ₹ {fund}
-                  </Typography>
-                </Paper>
-              )}
-            </Grid>
-
-            {/* Total Users */}
-            <Grid item xs={12} md={6}>
-              {loadingUsers ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    👥 Total Users (Management):
-                  </Typography>
-                  <Typography variant="h4" color="secondary">
-                    {userCount}
+                  <Typography className="dashboard-value">
+                    {item.value}
                   </Typography>
                 </Paper>
-              )}
-            </Grid>
-
-            {/* Student Stats */}
-            <Grid item xs={12} md={4}>
-              {loadingStudentStats ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    🎓 Total Students:
-                  </Typography>
-                  <Typography variant="h4" color="info.main">
-                    {studentStats.total}
-                  </Typography>
-                </Paper>
-              )}
-            </Grid>
-
-            <Grid item xs={12} md={4}>
-              {loadingStudentStats ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    ✅ Students Paid:
-                  </Typography>
-                  <Typography variant="h4" color="success.main">
-                    {studentStats.paid}
-                  </Typography>
-                </Paper>
-              )}
-            </Grid>
-
-            <Grid item xs={12} md={4}>
-              {loadingStudentStats ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    ❌ Students Not Paid:
-                  </Typography>
-                  <Typography variant="h4" color="error.main">
-                    {studentStats.notPaid}
-                  </Typography>
-                </Paper>
-              )}
-            </Grid>
-
-            {/* Payment Stats */}
-            <Grid item xs={12} md={4}>
-              {loadingPaymentStats ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    💳 Online Payments
-                  </Typography>
-                  <Typography variant="h4" color="info.main">
-                    {paymentStats.totalOnline}
-                  </Typography>
-                </Paper>
-              )}
-            </Grid>
-
-            <Grid item xs={12} md={4}>
-              {loadingPaymentStats ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    💵 Cash Payments
-                  </Typography>
-                  <Typography variant="h4" color="warning.main">
-                    {paymentStats.totalCash}
-                  </Typography>
-                </Paper>
-              )}
-            </Grid>
-
-            <Grid item xs={12} md={4}>
-              {loadingPaymentStats ? (
-                <CircularProgress />
-              ) : (
-                <Paper elevation={0} className="fund-box">
-                  <Typography variant="h6" className="fund-label">
-                    🍱 Food Coupons
-                  </Typography>
-                  <Typography variant="h4" color="secondary">
-                    {paymentStats.totalFoodCoupons}
-                  </Typography>
-                </Paper>
-              )}
-            </Grid>
+              </Grid>
+            ))}
           </Grid>
-        </Box>
-      </Paper>
+        )}
+      </Box>
     </div>
   );
 };

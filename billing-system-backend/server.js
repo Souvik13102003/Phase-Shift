@@ -27,6 +27,9 @@ app.use('/api/billings', require('./routes/billing.routes'));
 app.use('/api/fund', require('./routes/fund.routes'));
 app.use('/api/users', require('./routes/user.routes'));
 
+app.use('/bills', express.static(path.join(__dirname, 'public', 'bills')));
+
+
 
 // Root Route
 app.get('/', (req, res) => {

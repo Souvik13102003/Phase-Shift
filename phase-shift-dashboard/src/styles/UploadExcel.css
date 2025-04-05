@@ -1,0 +1,93 @@
+/* frontend/src/styles/UploadExcel.css */
+
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f5f7fa;
+    padding: 20px;
+  }
+  
+  .upload-paper {
+    width: 100%;
+    max-width: 600px;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    text-align: center;
+  }
+  
+  .upload-title {
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  
+  .upload-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #fafafa;
+    border: 2px dashed #cfd8dc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    color: #607d8b;
+  }
+  
+  .file-input-label:hover {
+    background-color: #f0f4f8;
+    border-color: #90a4ae;
+  }
+  
+  .upload-icon {
+    font-size: 32px;
+    color: #1976d2;
+  }
+  
+  .upload-btn {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #1976d2;
+    color: white;
+    font-weight: 500;
+    text-transform: none;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+  
+  .upload-btn:hover {
+    background-color: #1565c0;
+  }
+  
+  /* Responsive styling */
+  @media (max-width: 600px) {
+    .upload-paper {
+      padding: 24px;
+    }
+  
+    .upload-title {
+      font-size: 1.3rem;
+    }
+  
+    .file-input-label {
+      font-size: 0.9rem;
+    }
+  
+    .upload-btn {
+      font-size: 0.9rem;
+    }
+  }
+  

@@ -1,0 +1,57 @@
+/* frontend/src/styles/ViewAllStudents.css */
+
+.view-students-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+  }
+  
+  .header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .filters-container {
+    margin-bottom: 16px;
+  }
+  
+  .students-table {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .clickable-cell {
+    cursor: pointer;
+    color: #1976d2;
+  }
+  
+  .clickable-cell:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .header-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    .filters-container .MuiGrid-item {
+      flex: 1 1 100%;
+    }
+  
+    .view-students-container {
+      padding: 12px;
+    }
+  
+    .students-table th,
+    .students-table td {
+      padding: 8px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+  }
+  

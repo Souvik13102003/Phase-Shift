@@ -27,6 +27,8 @@ const studentSchema = new mongoose.Schema({
     type: Boolean,
     default: false, // ✅ default: not paid
   },
+
+  
 });
 
 module.exports = mongoose.model("Student", studentSchema);

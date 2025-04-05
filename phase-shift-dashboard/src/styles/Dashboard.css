@@ -1,41 +1,108 @@
 /* frontend/src/styles/Dashboard.css */
 
 .dashboard-container {
-    padding: 24px;
-    display: flex;
-    justify-content: center;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.dashboard-wrapper {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.dashboard-heading {
+  font-weight: 600;
+  color: #333;
+}
+
+.dashboard-subtext {
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.dashboard-loader {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.dashboard-card {
+  width: 220px;
+  height: 140px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-icon {
+  font-size: 30px;
+  color: #1976d2;
+  margin-bottom: 8px;
+}
+
+.dashboard-label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.dashboard-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+}
+
+/* Responsiveness with fixed size */
+@media (max-width: 768px) {
+  .dashboard-card {
+    width: 160px;
+    height: 120px;
+    padding: 12px;
   }
-  
-  .dashboard-paper {
-    width: 100%;
-    max-width: 800px;
-    padding: 32px;
-    background-color: #ffffff;
-    border-radius: 12px;
+
+  .dashboard-icon {
+    font-size: 24px;
   }
-  
-  .dashboard-title {
-    font-weight: 600;
-    color: #1976d2;
-    margin-bottom: 8px;
+
+  .dashboard-label {
+    font-size: 0.8rem;
   }
-  
-  .dashboard-subtext {
+
+  .dashboard-value {
     font-size: 1rem;
-    color: #555;
   }
-  
-  .fund-box {
-    margin-top: 16px;
-    padding: 20px;
-    background-color: #f0f2f5;
-    border-radius: 8px;
-    text-align: center;
+}
+
+@media (max-width: 500px) {
+  .dashboard-card {
+    width: 140px;
+    height: 110px;
   }
-  
-  .fund-label {
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: #333;
+
+  .dashboard-icon {
+    font-size: 20px;
   }
-  
+
+  .dashboard-label {
+    font-size: 0.75rem;
+  }
+
+  .dashboard-value {
+    font-size: 0.9rem;
+  }
+}

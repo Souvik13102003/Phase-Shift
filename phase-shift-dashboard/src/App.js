@@ -8,6 +8,7 @@ import UploadExcel from './pages/UploadExcel';
 import AddStudent from './pages/AddStudent';
 import Billing from './pages/Billing';
 import ViewAllStudents from './pages/ViewAllStudents';
+import AllBills from './pages/AllBills';
 import Sidebar from './components/Sidebar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
@@ -48,6 +49,7 @@ const App = () => {
                       <Route path="/upload" element={<UploadExcel />} />
                       <Route path="/add-student" element={<AddStudent />} />
                       <Route path="/view-all-students" element={<ViewAllStudents />} />
+                      <Route path="/all-bills" element={<AllBills />} />
                       <Route path="/billing/:rollNo" element={<Billing />} />
                     </Routes>
                   </Box>

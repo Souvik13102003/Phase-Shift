@@ -44,6 +44,11 @@ const billingSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  
+  billFileName: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = mongoose.model("Billing", billingSchema);

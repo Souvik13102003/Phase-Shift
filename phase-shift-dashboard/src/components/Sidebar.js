@@ -51,6 +51,10 @@ const Sidebar = ({ variant }) => {
           <ListItemIcon><ListAltIcon /></ListItemIcon>
           <ListItemText primary="Student List" />
         </ListItem>
+        <ListItem button component={Link} to="/all-bills">
+          <ListItemIcon><ListAltIcon /></ListItemIcon>
+          <ListItemText primary="All Bills" />
+        </ListItem>
       </List>
     </div>
   );
