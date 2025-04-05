@@ -47,7 +47,7 @@ const AddStudent = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:5000/api/students/manual", formData, {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/students/manual`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

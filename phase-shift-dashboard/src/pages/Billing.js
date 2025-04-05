@@ -29,7 +29,7 @@ const Billing = () => {
     const fetchStudent = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/students/roll/${rollNo}`, {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/students/roll/${rollNo}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStudent(res.data);
@@ -61,8 +61,8 @@ const Billing = () => {
         },
       };
 
-      const response = await axios.post('http://localhost:5000/api/billings/bill', data, config);
-      await axios.put(`http://localhost:5000/api/students/mark-paid/${rollNo}`, {}, config);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/billings/bill`, data, config);
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/students/mark-paid/${rollNo}`, {}, config);
 
       setSnackbar({ open: true, message: response.data.message, severity: 'success' });
       setTimeout(() => navigate('/view-all-students'), 1500);

@@ -37,7 +37,7 @@ const UploadExcel = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/students/upload-excel",
+        "https://billing-backend-ss94.onrender.com/api/students/upload-excel",
         formData,
         {
           headers: {

@@ -24,7 +24,7 @@ const ViewAllStudents = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       const token = localStorage.getItem("token");
-      const { data } = await axios.get("http://localhost:5000/api/students", {
+      const { data } = await axios.get("https://billing-backend-ss94.onrender.com/api/students", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setStudents(data);

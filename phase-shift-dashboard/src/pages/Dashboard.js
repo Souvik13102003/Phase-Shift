@@ -33,16 +33,16 @@ const Dashboard = () => {
     const fetchAll = async () => {
       try {
         const [fundRes, userRes, studentRes, paymentRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/fund", {
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/fund`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/users/count", {
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/count`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/students/stats", {
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/students/stats`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/billings/stats", {
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/billings/stats`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

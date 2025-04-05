@@ -28,7 +28,7 @@ const AllBills = () => {
   const fetchBills = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/billings/all", {
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/billings/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -63,7 +63,7 @@ const AllBills = () => {
   });
 
   const viewBill = (billFileName) => {
-    const filePath = `http://localhost:5000/bills/${billFileName}`;
+    const filePath = `https://billing-backend-ss94.onrender.com/bills/${billFileName}`;
     window.open(filePath, "_blank");
   };
 
