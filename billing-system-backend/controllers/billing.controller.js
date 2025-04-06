@@ -7,6 +7,10 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
+
 const generateBillPDF = async (billing, student) => {
   const doc = new PDFDocument({ size: 'A4', margin: 40 });
   const fileName = `bill-${student.universityRollNo}-${Date.now()}.pdf`;
@@ -17,7 +21,6 @@ const generateBillPDF = async (billing, student) => {
     fs.mkdirSync(billsDir, { recursive: true });
   }
 
-  const festLogo = path.join(__dirname, '../public/ps-logo.png');
   const tmslLogo = path.join(__dirname, '../public/tmsl-logo.png');
   const foodIcon = billing.foodCoupon
     ? path.join(__dirname, '../public/icons/fastfood.png')
@@ -25,10 +28,20 @@ const generateBillPDF = async (billing, student) => {
 
   doc.pipe(fs.createWriteStream(filePath));
 
-  const logoHeight = 60;
-  doc.image(festLogo, 40, 40, { height: logoHeight });
-  doc.image(tmslLogo, doc.page.width - 160, 44, { height: 40 });
+  // 🔒 Watermark (Name + Roll No in center, rotated and light)
+  doc.rotate(-45, { origin: [doc.page.width / 2, doc.page.height / 2] });
+  doc
+    .fontSize(40)
+    .fillColor('#cccccc')
+    .opacity(0.2)
+    .text(`${student.name}\n${student.universityRollNo}`, doc.page.width / 4, doc.page.height / 3, {
+      align: 'center',
+    });
+  doc.rotate(45, { origin: [doc.page.width / 2, doc.page.height / 2] });
+  doc.opacity(1); // Reset opacity
 
+  // ✅ Header
+  doc.image(tmslLogo, doc.page.width - 160, 44, { height: 40 });
   doc
     .font('Helvetica-Bold')
     .fontSize(20)
@@ -82,16 +95,21 @@ const generateBillPDF = async (billing, student) => {
   drawSectionHeader('Payment Details', y); y += 35;
   drawKeyValueRow('Payment Mode', billing.paymentMode, y); y += 25;
   drawKeyValueRow('Transaction ID', billing.transactionId || 'N/A', y); y += 25;
-  drawKeyValueRow('Amount Paid', `${billing.amount} /-`, y); y += 25;
-  drawKeyValueRow('Food Coupon', billing.foodCoupon ? 'Yes' : 'No', y); y += 50;
 
-  const iconSize = 80;
+  // ✅ Show emoji along with Yes/No for food
+  const foodStatus = billing.foodCoupon ? 'Yes ✅' : 'No ❌';
+  drawKeyValueRow('Amount Paid', `${billing.amount} /-`, y); y += 25;
+  drawKeyValueRow('Food Coupon', foodStatus, y); y += 50;
+
+  // 🍔 Food icon at center, slightly larger
+  const iconSize = 100;
   const centerX = (doc.page.width - iconSize) / 2;
   doc.image(foodIcon, centerX, y, { width: iconSize });
 
   doc.end();
   return filePath;
 };
+
 
 const sendBillEmail = async (email, pdfPath) => {
   const transporter = nodemailer.createTransport({
