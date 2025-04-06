@@ -46,7 +46,6 @@ const AllBills = () => {
   }, []);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -63,8 +62,8 @@ const AllBills = () => {
   });
 
   const viewBill = (billFileName) => {
-    const filePath = `https://ps-backend-railway-production.up.railway.app/bills/${billFileName}`;
-    window.open(filePath, "_blank");
+    // Open the Cloudinary-hosted PDF directly
+    window.open(billFileName, "_blank");
   };
 
   const exportToExcel = () => {
