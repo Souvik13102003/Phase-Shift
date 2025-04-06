@@ -63,7 +63,7 @@ const AllBills = () => {
   });
 
   const viewBill = (billFileName) => {
-    const filePath = `https://billing-backend-ss94.onrender.com/bills/${billFileName}`;
+    const filePath = `https://ps-backend-railway-production.up.railway.app/bills/${billFileName}`;
     window.open(filePath, "_blank");
   };
 
